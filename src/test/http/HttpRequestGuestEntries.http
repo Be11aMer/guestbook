@@ -1,0 +1,45 @@
+### add an entry
+POST http://localhost:8081/guestbook/entries
+Content-Type: application/json
+
+{
+    "title": "Danke für die schöne Zeit",
+    "comment": "Das Appartment ließ keine Wünsche offen.",
+    "commenter": "Müller"
+}
+
+### add another entry
+POST http://localhost:8081/guestbook/entries
+Content-Type: application/json
+
+{
+    "title": "Tolle Umgebung",
+    "comment": "Super die ganzen Clubs, Bars und Restaurants in direkter Umgebung.",
+    "commenter": "Maier"
+}
+
+### read all data
+GET http://localhost:8081/guestbook/entries
+Accept: application/json
+
+### update a sprecific entry
+PUT http://localhost:8081/guestbook/entries/1
+Content-Type: application/json
+
+{
+    "title": "Danke für die wunderschöne Zeit",
+    "comment": "Das Appartment ließ überhaupt keine Wünsche offen.",
+    "commenter": "Müllerchen"
+}
+
+### read a specific entry
+GET http://localhost:8081/guestbook/entries/1
+Accept: application/json
+
+### delete a specific entry
+DELETE http://localhost:8081/guestbook/entries/1
+Accept: application/json
+
+### read all data
+GET http://localhost:8081/guestbook/entries
+Accept: application/json

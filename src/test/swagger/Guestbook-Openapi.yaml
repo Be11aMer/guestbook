@@ -1,0 +1,159 @@
+openapi: 3.1.0
+
+info:
+  version: "1.0.0"
+  title: "Guestbook REST API"
+  description: "The REST APIs for the Guestbook web service"
+
+servers:
+  - description: "Localhost as server"
+    url: "http://localhost:8081/guestbook"
+tags:
+  #- name: "Guestbook Entries"
+  #  description: "Section for all CRUD-Methods"
+  - name: "Create"
+    description: "for all Create-Endpoint"
+  - name: "Read"
+    description: "for all Read-Endpoint"
+  - name: "Update"
+    description: "for all Update-Endpoint"
+  - name: "Delete"
+    description: "for all Delete-Endpoint"
+
+paths:
+  /entries:
+    post:
+      tags:
+        - "Create"
+      summary: "add an entry"
+      operationId: "addGuestbookEntry"
+      requestBody:
+        $ref: "#/components/requestBodies/GuestbookEntryRequest"
+      responses:
+        201:
+          $ref: "#/components/responses/GuestbookEntryResponse"
+    get:
+      tags:
+        - "Read"
+      summary: "returns a list of entries"
+      operationId: "getAllGuestbookEntries"
+      responses:
+        200:
+          $ref: "#/components/responses/GuestbookEntryResponseList"
+
+  /entries/{id}:
+    # Not all parsers seem to use this variant of the parameter definition
+    # for all subsequent paths:
+    #parameters:
+    #  - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - "Read"
+      summary: "return a specific Entry"
+      operationId: "getGuestbookEntry"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          $ref: "#/components/responses/GuestbookEntryResponse"
+    put:
+      tags:
+        - "Update"
+      summary: "update/modify an Entry"
+      operationId: "updateGuestbookEntry"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        $ref: "#/components/requestBodies/GuestbookEntryRequest"
+      responses:
+        200:
+          $ref: "#/components/responses/GuestbookEntryResponse"
+    delete:
+      tags:
+        - "Delete"
+      summary: "delete an Entry"
+      operationId: "deleteGuestbookEntryByUrl"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        200:
+          description: "OK"
+
+components:
+  schemas:
+    GuestbookEntryRequest:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+          examples:
+            - "Tolle Wohnung"
+        comment:
+          type: "string"
+          examples:
+            - "Eine sehr schön, saubere Wohnung"
+        commenter:
+          type: "string"
+          examples:
+            - "Klaus Maus"
+
+    GuestbookEntryResponse:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          examples:
+            - 123
+        title:
+          type: "string"
+          examples:
+            - "Tolle Wohnung"
+        comment:
+          type: "string"
+          examples:
+            - "Eine sehr schön, saubere Wohnung"
+        commenter:
+          type: "string"
+          examples:
+            - "Klaus Maus"
+        date:
+          type: "string"
+          format: "date"
+          examples:
+            - "2023-11-07T17:08:05.529+00:00"
+  parameters:
+    id:
+      name: "id"
+      in: "path"
+      required: true
+      description: "ID of the Guestbook entry"
+      schema:
+        type: "integer"
+        format: "int64"
+        examples:
+          - 124
+
+  requestBodies:
+    GuestbookEntryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GuestbookEntryRequest"
+
+  responses:
+    GuestbookEntryResponse:
+      description: "OK"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GuestbookEntryResponse"
+
+    GuestbookEntryResponseList:
+      description: "OK"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/GuestbookEntryResponse"
